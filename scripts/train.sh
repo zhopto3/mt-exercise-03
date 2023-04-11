@@ -11,6 +11,7 @@ mkdir -p $models
 mkdir -p $models/logs
 
 num_threads=4
+
 device=""
 
 #BASELINE CONDITIONS USED TO GENERATE "model.pt"
@@ -26,6 +27,8 @@ device=""
 #echo "time taken:"
 #echo "$SECONDS seconds"
 
+
+#Commands for training five models with varying dropout rates:
 SECONDS=0
 (cd $tools/pytorch-examples/word_language_model &&
     CUDA_VISIBLE_DEVICES=$device OMP_NUM_THREADS=$num_threads python main.py --data $data/shake \
