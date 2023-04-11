@@ -122,7 +122,7 @@ criterion = nn.NLLLoss()
 ###############################################################################
 
 if args.log_perplexity:
-    log = {"Epoch":[],"Valid. Perplexity":[]}
+    log = {"Epoch":[],"Training Perplexity":[],"Valid. Perplexity":[]}
 
 def repackage_hidden(h):
     """Wraps hidden states in new Tensors, to detach them from their history."""
@@ -174,6 +174,8 @@ def train():
     # Turn on training mode which enables dropout.
     model.train()
     total_loss = 0.
+    #MINE:
+    epoch_loss = 0.
     start_time = time.time()
     ntokens = len(corpus.dictionary)
     if args.model != 'Transformer':
@@ -198,6 +200,7 @@ def train():
             p.data.add_(p.grad, alpha=-lr)
 
         total_loss += loss.item()
+        epoch_loss += loss.item()
 
         if batch % args.log_interval == 0 and batch > 0:
             cur_loss = total_loss / args.log_interval
@@ -210,6 +213,9 @@ def train():
             start_time = time.time()
         if args.dry_run:
             break
+    #At the end of each epoch, log the perplexity of the training data
+    if args.log_perplexity:
+        log["Training Perplexity"].append(math.exp(epoch_loss/(len(train_data) // args.bptt)))
 
 
 def export_onnx(path, batch_size, seq_len):
@@ -268,6 +274,7 @@ print('| End of training | test loss {:5.2f} | test ppl {:8.2f}'.format(
 #APPEND TEST LOSS TO THE DATA Log & SAVE IT TO THE PATH SPECIFIED AS A CSV
 if args.log_perplexity:
     log["Epoch"].append("End of Training")
+    log["Training Perplexity"].append(0)
     log["Valid. Perplexity"].append(math.exp(test_loss))
 
     df = pd.DataFrame(log)
