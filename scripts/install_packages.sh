@@ -10,8 +10,8 @@ echo "Make sure this script is executed AFTER you have activated a virtualenv"
 
 pip install numpy torch sacremoses nltk
 
-#Matplotlib should be installed to run visualize_ppy.py
-pip install matplotlib
+#These should be installed to run visualize_ppy.py and main.py
+pip install matplotlib pandas
 
 # install Moses scripts for preprocessing
 
