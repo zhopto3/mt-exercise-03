@@ -33,21 +33,23 @@ def get_chart(file:str)->None:
     #The "41st" epoch is the test set...
     input = pd.read_csv(file)
     dropout = file.rstrip("perplexity.csv")[-1]
-    data["Perplexity"]=list(input["Valid. Perplexity"])
+    data["Validation Perplexity"]=list(input["Valid. Perplexity"])
+    data["Training Perplexity"]=list(input["Training Perplexity"])
     df = pd.DataFrame(data)
-    plt.plot(df["Epoch"], df["Perplexity"])
+    plt.plot(df["Epoch"], df["Validation Perplexity"], label = "Validation")
+    plt.plot(df["Epoch"], df["Training Perplexity"], label = "Training")
     plt.ylabel("Perplexity")
     plt.xlabel("Epoch")
-    plt.title("Validation Data Perplexity for Dropout of 0."+str(dropout))
+    plt.title("Validation and Training Data Perplexity with Dropout of 0."+str(dropout))
     plt.tight_layout()
-    #STILL NEED TO ADD THE SECOND LINE FOR TRAINING PERPLEXITY
+    plt.legend()
     plt.savefig("Dropout"+str(dropout)+"Fig.png")
     plt.close()
 
 
 def main():
     args = get_args()
-    #print(args.perplexity_logs)
+
     #make table
     get_table(args.perplexity_logs)
     #make graphs
