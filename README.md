@@ -27,7 +27,8 @@ Download and install required software:
 
     ./scripts/install_packages.sh
 
-Download and preprocess data:
+Download and preprocess data. This will collect the complete works of Shakespeare from the internet and create a correctly
+preprocessed test, train, and validation set from them:
 
     ./scripts/download_data.sh
 
@@ -41,4 +42,5 @@ Generate (sample) some text from a trained model with:
 
     ./scripts/generate.sh
 
+The sample generated from the model trained on default settings will be saved in ./samples/sample1
 
