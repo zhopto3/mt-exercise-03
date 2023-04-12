@@ -28,13 +28,12 @@ def get_table(files: list)->None:
 
 
 def get_chart(file:str)->None:
-    data = {"Epoch":[num for num in range(1,42)]}
-    #data["Epoch"].append("End of Training") # type: ignore 
-    #The "41st" epoch is the test set...
+    data = {"Epoch":[num for num in range(1,41)]}
+    #Test perplexity not displayed
     input = pd.read_csv(file)
     dropout = file.rstrip("perplexity.csv")[-1]
-    data["Validation Perplexity"]=list(input["Valid. Perplexity"])
-    data["Training Perplexity"]=list(input["Training Perplexity"])
+    data["Validation Perplexity"]=list(input["Valid. Perplexity"])[:40]
+    data["Training Perplexity"]=list(input["Training Perplexity"])[:40]
     df = pd.DataFrame(data)
     plt.plot(df["Epoch"], df["Validation Perplexity"], label = "Validation")
     plt.plot(df["Epoch"], df["Training Perplexity"], label = "Training")
