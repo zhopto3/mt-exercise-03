@@ -27,7 +27,7 @@ Download and install required software:
 
     ./scripts/install_packages.sh
 
-install_packages.sh has been updated to install the necessary packes used to log model perplexities during training.
+install_packages.sh has been updated to install the necessary packages used to log model perplexities during training.
 
 Download and preprocess data. This script will collect the complete works of Shakespeare from the internet and create a correctly
 preprocessed test, train, and validation set from them:
