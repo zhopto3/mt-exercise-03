@@ -27,20 +27,31 @@ Download and install required software:
 
     ./scripts/install_packages.sh
 
-Download and preprocess data. This will collect the complete works of Shakespeare from the internet and create a correctly
+install_packages.sh has been updated to install the necessary packes used to log model perplexities during training.
+
+Download and preprocess data. This script will collect the complete works of Shakespeare from the internet and create a correctly
 preprocessed test, train, and validation set from them:
 
     ./scripts/download_data.sh
 
-Train a model:
+Prior to training the model, you must first override the word language model "main.py" file with the version that can log model perplexities during training. First find the following script:
+
+    ./scripts/main.py
+
+Now move the above script to the following path, replacing the main.py script that is already in the folder:
+
+
+    /tools/pytorch-examples/word_language_model/main.py
+
+Running the following script will now train and evaluate five language models with verying levels of dropout, using the training, validation, and test data created from the works of Shakespeare. It will also create logs of each models perplexity at each epoch, as calculated for the test, validation, and data set. The perplexity after training will be calculated using the test set and logged as well:
 
     ./scripts/train.sh
 
 The training process can be interrupted at any time, and the best checkpoint will always be saved.
 
-Generate (sample) some text from a trained model with:
+Generate (sample) some text from the trained model with 0.0 dropout (which we found to have the highest test set perplexity) and the trained model with 0.4 dropout (which we found resulted in the lowest test set perplexity):
 
     ./scripts/generate.sh
 
-The sample generated from the model trained on default settings will be saved in ./samples/sample1
+The samples generated from the model trained on default settings will be saved in ./samples
 
