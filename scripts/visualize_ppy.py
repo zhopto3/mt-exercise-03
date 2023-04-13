@@ -21,16 +21,17 @@ def get_table(files: list)->None:
     ValData = {"Valid. Perplexity":["Epoch " + str(num) for num in range(1,41)]}
     TrainData = {"Training Perplexity":["Epoch " + str(num) for num in range(1,41)]}
     TestData = {"Test Perplexity":["Epoch " + str(num) for num in range(1,41)]}
-    ValData["Valid. Perplexity"].append("End of Training") # type: ignore
-    TrainData["Training Perplexity"].append("End of Training") # type: ignore
+    #Append the end-of-training test data to the test set perplexity table
     TestData["Test Perplexity"].append("End of Training") # type: ignore
     for file in files:
         input = pd.read_csv(file)
         dropout = file.rstrip("perplexity.csv")[-1]
-        ValData["Dropout 0."+str(dropout)]=list(input["Test Perplexity"])
-        TrainData["Dropout 0."+str(dropout)]=list(input["Training Perplexity"])
-        TestData["Dropout 0."+str(dropout)]=list(input["Training Perplexity"])
-    TestTable = pd.DataFrame(ValData).to_csv("Testppy_table.csv", index=False)
+        ValData["Dropout 0."+str(dropout)]=list(input["Valid. Perplexity"])[:40]
+        TrainData["Dropout 0."+str(dropout)]=list(input["Training Perplexity"])[:40]
+        TestData["Dropout 0."+str(dropout)]=list(input["Test Perplexity"])[:40]
+        TestData["Dropout 0."+str(dropout)].append(list(input["Valid. Perplexity"])[-1])
+
+    TestTable = pd.DataFrame(TestData).to_csv("Testppy_table.csv", index=False)
     ValTable = pd.DataFrame(ValData).to_csv("Valppy_table.csv", index=False)
     TrainTable = pd.DataFrame(TrainData).to_csv("Trainppy_table.csv", index=False)
 
