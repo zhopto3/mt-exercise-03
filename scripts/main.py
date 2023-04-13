@@ -122,7 +122,7 @@ criterion = nn.NLLLoss()
 ###############################################################################
 
 if args.log_perplexity:
-    log = {"Epoch":[],"Training Perplexity":[],"Valid. Perplexity":[]}
+    log = {"Epoch":[],"Training Perplexity":[],"Valid. Perplexity":[], "Test Perplexity":[]}
 
 def repackage_hidden(h):
     """Wraps hidden states in new Tensors, to detach them from their history."""
@@ -236,6 +236,9 @@ try:
         epoch_start_time = time.time()
         train()
         val_loss = evaluate(val_data)
+        if args.log_perplexity:
+            test_loss = evaluate(test_data)
+            log["Test Perplexity"].append(math.exp(test_loss))
         print('-' * 89)
         print('| end of epoch {:3d} | time: {:5.2f}s | valid loss {:5.2f} | '
                 'valid ppl {:8.2f}'.format(epoch, (time.time() - epoch_start_time),
@@ -275,6 +278,7 @@ print('| End of training | test loss {:5.2f} | test ppl {:8.2f}'.format(
 if args.log_perplexity:
     log["Epoch"].append("End of Training")
     log["Training Perplexity"].append(0)
+    log["Test Perplexity"].append(0)
     log["Valid. Perplexity"].append(math.exp(test_loss))
 
     df = pd.DataFrame(log)

@@ -18,13 +18,21 @@ def get_args():
 
 
 def get_table(files: list)->None:
-    data = {"Valid. Perplexity":["Epoch" + str(num) for num in range(1,41)]}
-    data["Valid. Perplexity"].append("End of Training") # type: ignore
+    ValData = {"Valid. Perplexity":["Epoch " + str(num) for num in range(1,41)]}
+    TrainData = {"Training Perplexity":["Epoch " + str(num) for num in range(1,41)]}
+    TestData = {"Test Perplexity":["Epoch " + str(num) for num in range(1,41)]}
+    ValData["Valid. Perplexity"].append("End of Training") # type: ignore
+    TrainData["Training Perplexity"].append("End of Training") # type: ignore
+    TestData["Test Perplexity"].append("End of Training") # type: ignore
     for file in files:
         input = pd.read_csv(file)
         dropout = file.rstrip("perplexity.csv")[-1]
-        data["Dropout 0."+str(dropout)]=list(input["Valid. Perplexity"])
-    table = pd.DataFrame(data).to_csv("ppy_table.csv", index=False)
+        ValData["Dropout 0."+str(dropout)]=list(input["Test Perplexity"])
+        TrainData["Dropout 0."+str(dropout)]=list(input["Training Perplexity"])
+        TestData["Dropout 0."+str(dropout)]=list(input["Training Perplexity"])
+    TestTable = pd.DataFrame(ValData).to_csv("Testppy_table.csv", index=False)
+    ValTable = pd.DataFrame(ValData).to_csv("Valppy_table.csv", index=False)
+    TrainTable = pd.DataFrame(TrainData).to_csv("Trainppy_table.csv", index=False)
 
 
 def get_chart(file:str)->None:
